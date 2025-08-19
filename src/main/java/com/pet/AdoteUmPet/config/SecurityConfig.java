@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() //Libera os endpoints de login que for /auth
+                        .requestMatchers("/auth/login").permitAll() //Libera os endpoints de login que for /auth
                         .anyRequest().authenticated()  //Todas as outras precisam de autenticação
                 )
                 //Autenticação não mantem sessão no servidor

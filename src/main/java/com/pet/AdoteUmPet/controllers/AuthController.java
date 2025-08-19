@@ -8,11 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;
@@ -27,10 +26,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req){
-        Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
-        );
-        String token = jwtUtils.gerarToken(req.getUsername());
-        return ResponseEntity.ok(new JwtResponse(token));
+        System.out.println("MÉTODO LOGIN CHAMADO!");
+        System.out.println("Username: " + req.getUsername());
+        System.out.println("Password: " + req.getPassword());
+        try{
+            Authentication auth = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
+            );
+            System.out.println("AUTENTICAÇÃO OK!");
+            String token = jwtUtils.gerarToken(req.getUsername());
+            System.out.println("TOKEN GERADO: " + token);
+
+            return ResponseEntity.ok(new JwtResponse(token));
+        }catch (Exception e) {
+            System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(403).body("Erro: " + e.getMessage());
+        }
+
     }
 }

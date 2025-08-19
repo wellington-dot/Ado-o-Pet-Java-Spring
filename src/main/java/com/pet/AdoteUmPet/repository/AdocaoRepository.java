@@ -17,6 +17,6 @@ public interface AdocaoRepository extends JpaRepository<Adocao, Long> {
     @Query(value = "SELECT p.* FROM pet p JOIN adocao a ON p.id = a.pet_id WHERE a.usuario_id = :idUsuario", nativeQuery = true)
     List<Pet> findPetsByUsuarioId(@RequestParam Long idUsuario);
 
-    @Query(value = "SELECT p.* FROM pet p WHERE p.adotado = false", nativeQuery = true)
+    @Query(value = "SELECT p.* FROM pet p WHERE p.adotado = 0", nativeQuery = true)
     List<Pet> findPetsDisponiveis();
 }
