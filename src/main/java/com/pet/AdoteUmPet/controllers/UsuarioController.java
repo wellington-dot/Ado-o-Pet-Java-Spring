@@ -34,14 +34,14 @@ public class UsuarioController {
 
     //Salvar novo usuario
     @PostMapping
-    @PreAuthorize("hasRole('ADOTANTE') or hasRole('ADMIN')")
-    public ResponseEntity<?> adicionarUsuario(@RequestBody Usuario body){
+    @PreAuthorize("hasRole('USUARIO') or hasRole('ADMIN')")
+    public ResponseEntity<?> adicionarUsuario(@RequestBody Usuario usuario){
         try{
-            usuarioServices.adicionarUsuario(body);
+            usuarioServices.adicionarUsuario(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("erro", "Erro ao adicionar adotante.."));
+                    .body(Map.of("erro " + e, "Erro ao adicionar adotante.."));
         }
     }
 
@@ -60,7 +60,7 @@ public class UsuarioController {
 
     //Atualizar cadas de um usuario
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADOTANTE') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USUARIO') or hasRole('ADMIN')")
     public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario attUsuario){
         try{
             usuarioServices.atualizarUsuario(id, attUsuario);

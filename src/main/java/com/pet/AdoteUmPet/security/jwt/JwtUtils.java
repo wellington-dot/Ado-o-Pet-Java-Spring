@@ -18,7 +18,7 @@ public class JwtUtils {
 
     //Variavel que define o tempo de expiração do token
     @Value("${jwt.expiration}")
-    private String jwtExpirationMs;
+    private long jwtExpirationMs;
 
     //Metodo para gerar a chave de assinatura (usa a string de chave secreta jwtSecret, e transforma em chave segura)
     private Key getSigningKey(){

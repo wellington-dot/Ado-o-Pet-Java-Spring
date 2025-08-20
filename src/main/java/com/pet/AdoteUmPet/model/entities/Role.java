@@ -2,7 +2,7 @@ package com.pet.AdoteUmPet.model.entities;
 
 public enum Role {
     ADMIN("Admin"),
-    ADOTANTE("Adotante");
+    USUARIO("Usuario");
 
     private String descricao;
 

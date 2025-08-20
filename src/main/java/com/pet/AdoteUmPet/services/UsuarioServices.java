@@ -3,6 +3,7 @@ package com.pet.AdoteUmPet.services;
 import com.pet.AdoteUmPet.model.entities.Usuario;
 import com.pet.AdoteUmPet.repository.AdocaoRepository;
 import com.pet.AdoteUmPet.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +13,12 @@ public class UsuarioServices {
 
     private final UsuarioRepository usuarioRepository;
     private final AdocaoRepository adocaoRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServices(UsuarioRepository usuarioRepository, AdocaoRepository adocaoRepository){
+    public UsuarioServices(UsuarioRepository usuarioRepository, AdocaoRepository adocaoRepository, PasswordEncoder passwordEncoder){
         this.usuarioRepository = usuarioRepository;
         this.adocaoRepository = adocaoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -25,8 +28,15 @@ public class UsuarioServices {
     }
 
     //Salvar novo usuario
-    public void adicionarUsuario(Usuario body){
-        usuarioRepository.save(body);
+    public void adicionarUsuario(Usuario usuario){
+        if (usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new RuntimeException("Email já cadastrado");
+        }
+        //Criptografa a senha
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        System.out.println(usuario);
+        //Salva no banco
+        usuarioRepository.save(usuario);
     }
 
     //Deletar um usuario pelo id
